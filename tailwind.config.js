@@ -18,7 +18,14 @@ export default {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
       },
+      duration: {
+        fast: "1s",
+        normal: "3s",
+        slow: "5s",
+    },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@designbycode/tailwindcss-text-glitch'),
+  ],
 }

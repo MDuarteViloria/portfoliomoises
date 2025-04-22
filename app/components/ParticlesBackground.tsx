@@ -35,7 +35,7 @@ export default function ParticlesBackground() {
       <Particles
         options={{
           particles: {
-            number: { value: 50 },
+            number: { value: 75 },
             size: { value: 3 },
             move: { enable: true },
             opacity: { value: 0.05 },
@@ -47,7 +47,15 @@ export default function ParticlesBackground() {
               opacity: 0.05,
               width: 1,
             },
-          },
+            interactivity: {
+              detect_on: "window",
+              events: {
+                onhover: { enable: true, mode: "repulse" },
+                onclick: { enable: true, mode: "push" },
+                resize: true
+              },
+          }
+        },
         }}
         init={particlesInit}
         className="absolute inset-0"
