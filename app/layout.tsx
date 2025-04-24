@@ -4,7 +4,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Anton } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
-import {Nav} from "@/app/ui/nav";
+
+import {HeroUIProvider} from "@heroui/react";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -36,9 +38,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${anton.variable} text-white bg-primary antialiased`}
       >       
-          
+      <HeroUIProvider>
           <main className="">{children}</main>
-        
+        </HeroUIProvider>
       </body>
     </html>
   );
