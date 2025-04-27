@@ -7,7 +7,7 @@ import type { Engine } from "tsparticles-engine";
 
 export default function ParticlesBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [particleColor, setParticleColor] = useState("#ffffff");
+  const [particleColor, setParticleColor] = useState("color-black");
 
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadLinksPreset(engine);

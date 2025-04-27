@@ -3,7 +3,7 @@ import { type } from 'tailwindcss'
 const {heroui} = require("@heroui/react");
 
 export default {
-  darkMode: 'media', // o 'class'
+  darkMode: 'selector', // o 'class'
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
@@ -31,5 +31,5 @@ export default {
     require('@designbycode/tailwindcss-text-glitch'),
     heroui(),
   ],
-  darkMode: "class",
+  
 }
