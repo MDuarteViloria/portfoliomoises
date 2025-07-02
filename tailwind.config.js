@@ -1,45 +1,48 @@
-import { heroui } from "@heroui/react";
-
+/** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'selector',
   content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './app/**/*.{js,ts,jsx,tsx}',
-    "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
-      colors: {
-        primary: 'var(--primary-color)',
-        secondary: 'var(--secondary-color)',
-        tertiary: 'var(--tertiary-color)',
-        highlight: 'var(--highlight-color)',
-        accent: 'var(--accent-color)',
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
-      },
       fontFamily: {
-        sans: ['var(--font-inter)', 'var(--font-geist-sans)', 'system-ui', 'sans-serif'],
-        mono: ['var(--font-geist-mono)', 'monospace'],
-        anton: ['var(--font-anton)', 'sans-serif'],
+        'display': ['Orbitron', 'monospace'],
+        'sans': ['Inter', 'sans-serif'],
+      },
+      colors: {
+        primary: 'var(--primary)',
+        secondary: 'var(--secondary)',
+        accent: 'var(--accent)',
+        background: 'var(--background)',
+        surface: 'var(--surface)',
+        text: {
+          DEFAULT: 'var(--text)',
+          secondary: 'var(--text-secondary)',
+        },
       },
       animation: {
-        'gradient-shift': 'gradient-shift 3s ease infinite',
-        'float': 'float 3s ease-in-out infinite',
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+        'float': 'float 6s ease-in-out infinite',
+      },
+      keyframes: {
+        'pulse-glow': {
+          '0%': {
+            boxShadow: '0 0 5px var(--primary), 0 0 10px var(--primary), 0 0 15px var(--primary)',
+          },
+          '100%': {
+            boxShadow: '0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 30px var(--primary)',
+          },
+        },
+        'float': {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
       },
       backdropBlur: {
         xs: '2px',
       },
-      boxShadow: {
-        'glow': '0 0 20px rgba(59, 130, 246, 0.3)',
-        'glow-lg': '0 0 40px rgba(59, 130, 246, 0.4)',
-      },
     },
   },
-  plugins: [
-    require('@designbycode/tailwindcss-text-glitch'),
-    heroui(),
-  ],
+  plugins: [],
 }
