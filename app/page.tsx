@@ -1,16 +1,11 @@
-// app/page.tsx
-
-import {Nav} from "./ui/nav";
-import SkillsSection from "./ui/skills";
 import HomeSection from "./ui/home";
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@heroui/react";
+import SkillsSection from "./ui/skills";
+
 export default function Home() {
   return (
-      <div className="relative bg-white dark:bg-gray-800 min-h-screen">
-      {/* Fondo de partículas */}      
+    <div className="relative bg-gradient-to-br from-white via-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-screen">
       <HomeSection />      
-      <SkillsSection  />
-      </div>
-    
+      <SkillsSection />
+    </div>
   );
 }

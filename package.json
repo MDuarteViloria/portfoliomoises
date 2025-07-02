@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.5",
     "@heroui/react": "^2.7.6",
     "boxicons": "^2.1.4",
     "framer-motion": "^12.8.0",

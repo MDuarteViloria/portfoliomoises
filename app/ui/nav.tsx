@@ -1,25 +1,39 @@
 'use client';
 import React, { useState } from "react";
-import { useTheme } from '@/app/providers';
+import { useApp, languages, colorPalettes } from '@/app/contexts/AppContext';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 export function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const [buttonOpen, setButtonOpen] = useState(false);
+  const [isThemeOpen, setIsThemeOpen] = useState(false);
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+  
+  const { 
+    language, 
+    setLanguage, 
+    theme, 
+    setTheme, 
+    colorPalette, 
+    setColorPalette, 
+    translations 
+  } = useApp();
+
   const menuItems = [
-    { name: "Home", href: "#home" },
-    { name: "Skills", href: "#skills" },
-    { name: "Projects", href: "#projects" },
-    { name: "Contact", href: "#contact" },
+    { name: translations.nav.home, href: "#home" },
+    { name: translations.nav.skills, href: "#skills" },
+    { name: translations.nav.projects, href: "#projects" },
+    { name: translations.nav.contact, href: "#contact" },
   ];
 
   return (
-    <nav className="w-full max-w-2xl flex justify-between mx-auto text-gray-900 dark:text-gray-100 shadow-md px-6 bg-white/80 dark:bg-gray-800 py-3 rounded-b-2xl relative">
-      <div className="sm:hidden flex items-center justify-between w-full">       
-        {/* Botón hamburguesa */}
+    <nav className="w-full max-w-4xl flex justify-between mx-auto text-gray-900 dark:text-gray-100 shadow-2xl px-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md py-4 rounded-b-3xl relative border-b border-gray-200/50 dark:border-gray-700/50">
+      
+      {/* Mobile Menu */}
+      <div className="lg:hidden flex items-center justify-between w-full">       
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="sm:hidden text-gray-700 dark:text-gray-300 focus:outline-none"
+          className="lg:hidden text-gray-700 dark:text-gray-300 focus:outline-none hover:text-primary transition-colors duration-300"
         >
           {isMenuOpen ? (
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,79 +45,231 @@ export function Nav() {
             </svg>
           )}
         </button>
-        <div
-  className={`absolute top-16 left-1/4 transform -translate-x-1/2 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 z-10 flex flex-col items-start gap-4 ${
-    isMenuOpen ? "scale-y-100 opacity-100 max-h-screen" : "scale-y-0 opacity-0 max-h-0"
-  } transition-all duration-300 origin-top`}
->
-  {menuItems.map((item) => (
-    <a
-      key={item.name}
-      href={item.href}
-      className="w-full text-gray-700 dark:text-gray-300 hover:text-primary transition-colors duration-300"
-    >
-      {item.name}
-    </a>
-  ))}
-</div>
-      </div>
-      {/* Botón para abrir el menú */}
-      <div className="flex items-center gap-2 sm:mr-4">
-      <button
-          onClick={() => setButtonOpen(!buttonOpen)}
-          className="block text-gray-700 dark:text-gray-300 focus:outline-none"
-        >
-          <i className="bx bx-sun text-2xl"></i>
-      </button>
-      </div>
 
-        {buttonOpen && (
-          <div className="absolute top-16 right-4 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 z-10">
-            <button
-              onClick={() => setTheme("light")}
-              className={`w-full px-4 py-2 mb-2 rounded ${
-                theme === "light"
-                  ? "bg-primary text-black"
-                  : "bg-gray-200 dark:bg-gray-700 text-black dark:text-gray-300"
-              }`}
+        {/* Mobile Dropdown Menu */}
+        <div className={`absolute top-16 left-4 right-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md shadow-2xl rounded-2xl p-6 z-50 border border-gray-200/50 dark:border-gray-700/50 ${
+          isMenuOpen ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 -translate-y-4 pointer-events-none"
+        } transition-all duration-300`}>
+          {menuItems.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className="block w-full text-gray-700 dark:text-gray-300 hover:text-primary transition-colors duration-300 py-3 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+              onClick={() => setIsMenuOpen(false)}
             >
-              Claro
-            </button>
+              {item.name}
+            </a>
+          ))}
+        </div>
+
+        {/* Mobile Controls */}
+        <div className="flex items-center gap-2">
+          {/* Language Selector */}
+          <div className="relative">
             <button
-              onClick={() => setTheme("dark")}
-              className={`w-full px-4 py-2 mb-2 rounded ${
-                theme === "dark"
-                  ? "bg-primary text-white"
-                  : "bg-gray-200 dark:bg-gray-700 text-black dark:text-gray-300"
-              }`}
+              onClick={() => setIsLanguageOpen(!isLanguageOpen)}
+              className="flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
             >
-              Oscuro
+              <span className="text-lg">{language.flag}</span>
+              <ChevronDownIcon className="w-4 h-4" />
             </button>
+            
+            {isLanguageOpen && (
+              <div className="absolute top-12 right-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md shadow-xl rounded-xl p-2 z-50 border border-gray-200/50 dark:border-gray-700/50 min-w-[120px]">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      setLanguage(lang);
+                      setIsLanguageOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-300 ${
+                      language.code === lang.code
+                        ? "bg-primary text-white"
+                        : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    <span>{lang.flag}</span>
+                    <span className="text-sm">{lang.name}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Theme Selector */}
+          <button
+            onClick={() => setIsThemeOpen(!isThemeOpen)}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
+          >
+            <i className="bx bx-sun text-xl"></i>
+          </button>
+        </div>
+
+        {/* Theme Dropdown */}
+        {isThemeOpen && (
+          <div className="absolute top-16 right-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md shadow-xl rounded-xl p-2 z-50 border border-gray-200/50 dark:border-gray-700/50 min-w-[120px]">
+            {(['light', 'dark', 'system'] as const).map((themeOption) => (
+              <button
+                key={themeOption}
+                onClick={() => {
+                  setTheme(themeOption);
+                  setIsThemeOpen(false);
+                }}
+                className={`w-full px-3 py-2 rounded-lg transition-colors duration-300 text-left ${
+                  theme === themeOption
+                    ? "bg-primary text-white"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
+              >
+                {translations.theme[themeOption]}
+              </button>
+            ))}
           </div>
         )}
-      
-
-      {/* Menú de escritorio */}
-      <div className="hidden sm:flex gap-8 items-center">
-        {menuItems.slice(0, 3).map((item) => (
-          <a
-            key={item.name}
-            href={item.href}
-            className="hover:text-primary text-gray-700 dark:text-gray-300 transition-colors duration-300"
-          >
-            {item.name}
-          </a>
-        ))}
-        <a
-          href="#contact"
-          className="bg-primary text-black dark:text-white rounded-xl px-4 py-2 hover:bg-primary/90 transition-all duration-300"
-        >
-          Contact
-        </a>
       </div>
 
-      {/* Menú desplegable en móviles */}
-      
+      {/* Desktop Menu */}
+      <div className="hidden lg:flex items-center justify-between w-full">
+        {/* Navigation Links */}
+        <div className="flex gap-8 items-center">
+          {menuItems.slice(0, 3).map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className="relative hover:text-primary text-gray-700 dark:text-gray-300 transition-colors duration-300 font-medium group"
+            >
+              {item.name}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+            </a>
+          ))}
+        </div>
+
+        {/* Right Side Controls */}
+        <div className="flex items-center gap-4">
+          {/* Color Palette Selector */}
+          <div className="relative">
+            <button
+              onClick={() => setIsPaletteOpen(!isPaletteOpen)}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
+            >
+              <div 
+                className="w-4 h-4 rounded-full border-2 border-white shadow-sm"
+                style={{ backgroundColor: colorPalette.colors.primary }}
+              />
+              <ChevronDownIcon className="w-4 h-4" />
+            </button>
+            
+            {isPaletteOpen && (
+              <div className="absolute top-12 right-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md shadow-xl rounded-xl p-3 z-50 border border-gray-200/50 dark:border-gray-700/50 min-w-[200px]">
+                <div className="grid grid-cols-1 gap-2">
+                  {colorPalettes.map((palette) => (
+                    <button
+                      key={palette.id}
+                      onClick={() => {
+                        setColorPalette(palette);
+                        setIsPaletteOpen(false);
+                      }}
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-300 ${
+                        colorPalette.id === palette.id
+                          ? "bg-primary text-white"
+                          : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                      }`}
+                    >
+                      <div className="flex gap-1">
+                        {Object.values(palette.colors).slice(0, 3).map((color, index) => (
+                          <div
+                            key={index}
+                            className="w-3 h-3 rounded-full border border-white/50"
+                            style={{ backgroundColor: color }}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-sm font-medium">{palette.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Language Selector */}
+          <div className="relative">
+            <button
+              onClick={() => setIsLanguageOpen(!isLanguageOpen)}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
+            >
+              <span className="text-lg">{language.flag}</span>
+              <span className="text-sm font-medium">{language.name}</span>
+              <ChevronDownIcon className="w-4 h-4" />
+            </button>
+            
+            {isLanguageOpen && (
+              <div className="absolute top-12 right-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md shadow-xl rounded-xl p-2 z-50 border border-gray-200/50 dark:border-gray-700/50 min-w-[140px]">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      setLanguage(lang);
+                      setIsLanguageOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-300 ${
+                      language.code === lang.code
+                        ? "bg-primary text-white"
+                        : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    <span>{lang.flag}</span>
+                    <span className="text-sm font-medium">{lang.name}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Theme Selector */}
+          <div className="relative">
+            <button
+              onClick={() => setIsThemeOpen(!isThemeOpen)}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
+            >
+              <i className="bx bx-sun text-xl"></i>
+            </button>
+            
+            {isThemeOpen && (
+              <div className="absolute top-12 right-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md shadow-xl rounded-xl p-2 z-50 border border-gray-200/50 dark:border-gray-700/50 min-w-[120px]">
+                {(['light', 'dark', 'system'] as const).map((themeOption) => (
+                  <button
+                    key={themeOption}
+                    onClick={() => {
+                      setTheme(themeOption);
+                      setIsThemeOpen(false);
+                    }}
+                    className={`w-full px-3 py-2 rounded-lg transition-colors duration-300 text-left ${
+                      theme === themeOption
+                        ? "bg-primary text-white"
+                        : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    {translations.theme[themeOption]}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Contact Button */}
+          <a
+            href="#contact"
+            className="bg-gradient-to-r from-primary to-highlight text-white rounded-xl px-6 py-2 hover:shadow-lg hover:scale-105 transition-all duration-300 font-medium"
+            style={{
+              background: `linear-gradient(135deg, ${colorPalette.colors.primary}, ${colorPalette.colors.highlight})`
+            }}
+          >
+            {translations.nav.contact}
+          </a>
+        </div>
+      </div>
     </nav>
   );
 }
